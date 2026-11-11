@@ -1,0 +1,20 @@
+beforeProject { project ->
+    project.plugins.withId('com.android.library') {
+        // Native sources match the official v0.4.8 release; this repair changes Kotlin/resources.
+        project.androidComponents.finalizeDsl { android ->
+            android.externalNativeBuild.cmake.path = null
+            android.sourceSets.main.jniLibs.srcDir(new File(project.rootDir, 'prebuilt/llama-libs'))
+        }
+    }
+    project.plugins.withId('com.android.application') {
+        project.tasks.configureEach { task ->
+            if (task.name == 'prepareOnnxRuntime') task.doFirst {
+                project.copy {
+                    from new File(project.rootDir, 'prebuilt')
+                    include 'sherpa-onnx.aar', 'onnxruntime.zip'
+                    into project.layout.buildDirectory.dir('generated/onnxruntime')
+                }
+            }
+        }
+    }
+}

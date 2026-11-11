@@ -1,0 +1,6 @@
+{
+  "profileId": "video-en-ja-ru-2026-11-07-v1",
+  "baseUrl": "https://api.deepseek.com/v1/",
+  "apiKey": "",
+  "model": "deepseek-flash"
+}
